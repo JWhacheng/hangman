@@ -8,15 +8,20 @@ def get_words_from_file():
       words.append(line.strip("\n"))
   return words
 
+def replace_accent_mark_letters(word):
+  replacements = (("á", "a"), ("é", "e"), ("í", "i"), ("ó", "o"), ("ú", "u"))
+  for replacement in replacements:
+    word = str(word).replace(replacement[0], replacement[1])
+  return word
+
 def get_random_word():
   words = get_words_from_file()
-  return random.choice(words)
+  return replace_accent_mark_letters(random.choice(words))
 
 def run():
   won = False
   word_to_guess = str(get_random_word()).upper()
   guessed_word = ["_" for i in range(0, len(word_to_guess))]
-
   while reduce(lambda a, b: a + b, guessed_word) != word_to_guess:
     print("¡Adivina la palabra!")
     for letter_in_guessed_word in guessed_word:
