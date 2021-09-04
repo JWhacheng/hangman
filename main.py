@@ -1,4 +1,6 @@
+import os
 import random
+from sys import platform
 from functools import reduce
 
 def get_words_from_file():
@@ -20,9 +22,10 @@ def get_random_word():
 
 def run():
   won = False
+  opportunities = 11
   word_to_guess = str(get_random_word()).upper()
   guessed_word = ["_" for i in range(0, len(word_to_guess))]
-  while reduce(lambda a, b: a + b, guessed_word) != word_to_guess:
+  while reduce(lambda a, b: a + b, guessed_word) != word_to_guess and opportunities > 0:
     print("¡Adivina la palabra!")
     for letter_in_guessed_word in guessed_word:
       print(letter_in_guessed_word, end=" ")
@@ -31,11 +34,19 @@ def run():
       for i in range(0, len(word_to_guess)):
         if letter == word_to_guess[i]:
           guessed_word[i] = letter
+    else:
+      opportunities -= 1
     if reduce(lambda a, b: a + b, guessed_word) == word_to_guess:
       won = True
+    if platform == "linux" or platform == "linux2":
+      os.system("clear")
+    else:
+      os.system("cls")
 
   if won:
     print("¡Ganaste! La palabra era " + word_to_guess)
+  else:
+    print("Se te acabaron las oportunidades. La palabra era " + word_to_guess)
     
 if __name__ == "__main__":
   run()
